@@ -4,7 +4,6 @@
       <v-col cols="12" sm="6">
         <v-file-input label="Wireguardconfig.com zip file" @update:model-value="onChange"></v-file-input>
         <v-text-field v-model="interfaceName" label="interface name"></v-text-field>
-        <v-text-field v-model="listenPort" label="listen port"></v-text-field>
         <v-text-field v-model="mtu" label="mtu"></v-text-field>
         <v-textarea v-model="input" auto-grow spellcheck="false" label="Wireguard host config"></v-textarea>
         <v-btn class="ma-2" @click="addEntry">Add client config</v-btn>
@@ -44,7 +43,7 @@ interface ClientInfo {
 }
 
 const interfaceName = ref('wireguard-server')
-const listenPort = ref('51280')
+// const listenPort = ref('51280')
 const mtu = ref('1420')
 const input = ref('')
 const clientConfigs = ref<ClientInfo[]>([])
@@ -86,6 +85,12 @@ const output = computed(() => {
     return null
   }
 })
+
+const listenPort = computed(() => {
+  const port = output.value?.Interface?.ListenPort ?? '0'
+  return port
+})
+
 const parsedClients = computed(() => {
   const resList: { name:string, value: any}[] = []
   for (const client of clientConfigs.value) {
